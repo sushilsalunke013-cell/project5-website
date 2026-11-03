@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudOps - DevOps Project</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #101827;
+            color: white;
+            line-height: 1.6;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: #172235;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #38d9a9;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        nav a:hover {
+            color: #38d9a9;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #38d9a9;
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: 0 auto 30px;
+            color: #cbd5e1;
+            font-size: 18px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #38d9a9;
+            color: #101827;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #20b98b;
+        }
+
+        .tools {
+            padding: 60px 8%;
+            text-align: center;
+        }
+
+        .tools h2 {
+            font-size: 32px;
+            margin-bottom: 35px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #172235;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #29374d;
+        }
+
+        .card h3 {
+            color: #38d9a9;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #cbd5e1;
+        }
+
+        .about {
+            padding: 60px 8%;
+            text-align: center;
+            background: #172235;
+        }
+
+        .about h2 {
+            margin-bottom: 15px;
+        }
+
+        .about p {
+            max-width: 700px;
+            margin: auto;
+            color: #cbd5e1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 800px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 8px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">CloudOps</div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#tools">Tools</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Automate. Deploy.<br><span>Scale with Confidence.</span></h1>
+
+        <p>
+            A simple static website demonstrating a DevOps CI/CD pipeline
+            using Jenkins, Docker, Trivy, and Kubernetes.
+        </p>
+
+        <a href="#tools" class="button">Explore DevOps Tools</a>
+    </section>
+
+    <section class="tools" id="tools">
+        <h2>Our DevOps Tools</h2>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Jenkins</h3>
+                <p>Automates application building and deployment through CI/CD pipelines.</p>
+            </div>
+
+            <div class="card">
+                <h3>Docker</h3>
+                <p>Packages the website into a portable and lightweight container.</p>
+            </div>
+
+            <div class="card">
+                <h3>Trivy</h3>
+                <p>Scans container images for known security vulnerabilities.</p>
+            </div>
+
+            <div class="card">
+                <h3>Kubernetes</h3>
+                <p>Deploys and manages containerized applications at scale.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <h2>About This Project</h2>
+
+        <p>
+            This website is created as a demonstration application for a
+            DevOps project. The main objective is to automate its build,
+            security scan, container publishing, and deployment process.
+        </p>
+    </section>
+
+    <footer>
+        <p>CloudOps CI/CD Project | HTML and CSS</p>
+    </footer>
+
+</body>
+</html>
