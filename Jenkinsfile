@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -6,17 +5,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out Project 5 source code'
-                checkout scm
+
+                git branch: 'master',
+                    url: 'https://github.com/sushilsalunke013-cell/project5-website.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image'
-
-                sh '''
-                    docker build -t cloudops-static-site:1.0 .
-                '''
+                sh 'docker build -t cloudops-static-site:1.0 .'
             }
         }
 
@@ -41,10 +39,6 @@ pipeline {
 
         failure {
             echo 'Pipeline failed. Check the build or Trivy scan output.'
-        }
-
-        always {
-            echo 'Project 5 CI pipeline execution finished.'
         }
     }
 }
