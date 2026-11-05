@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -12,13 +13,17 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image'
-                sh 'docker build -t cloudops-static-site:1.0 .'
+
+                sh '''
+                    docker build -t cloudops-static-site:1.0 .
+                '''
             }
         }
 
         stage('Trivy Security Scan') {
             steps {
                 echo 'Scanning Docker image for vulnerabilities'
+
                 sh '''
                     trivy image \
                     --severity HIGH,CRITICAL \
@@ -33,8 +38,13 @@ pipeline {
         success {
             echo 'Pipeline completed: image passed the security gate.'
         }
+
         failure {
             echo 'Pipeline failed. Check the build or Trivy scan output.'
+        }
+
+        always {
+            echo 'Project 5 CI pipeline execution finished.'
         }
     }
 }
