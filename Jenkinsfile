@@ -1,44 +1,57 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE = 'sushilsalunke/project-5-cicd:1.0'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out Project 5 source code'
-
-                git branch: 'master',
-                    url: 'https://github.com/sushilsalunke013-cell/project5-website.git'
+                checkout scm
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Image') {
             steps {
-                echo 'Building Docker image'
                 sh 'docker build -t cloudops-static-site:1.0 .'
             }
         }
 
-        stage('Trivy Security Scan') {
+        stage('Trivy Scan') {
             steps {
-                echo 'Scanning Docker image for vulnerabilities'
+                sh 'trivy image --severity HIGH,CRITICAL --exit-code 1 cloudops-static-site:1.0'
+            }
+        }
 
-                sh '''
-                    trivy image \
-                    --severity HIGH,CRITICAL \
-                    --exit-code 1 \
-                    cloudops-static-site:1.0
-                '''
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_TOKEN'
+                )]) {
+                    sh '''
+                        docker tag cloudops-static-site:1.0 $IMAGE
+
+                        echo "$DOCKER_TOKEN" | docker login \
+                            -u "$DOCKER_USER" --password-stdin
+
+                        docker push $IMAGE
+                        docker logout
+                    '''
+                }
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed: image passed the security gate.'
+            echo 'Image scanned and pushed successfully!'
         }
 
         failure {
-            echo 'Pipeline failed. Check the build or Trivy scan output.'
+            echo 'Pipeline failed. Check the console output.'
         }
     }
 }
