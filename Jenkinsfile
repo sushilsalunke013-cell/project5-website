@@ -81,7 +81,7 @@ pipeline {
                         --certificate-authority=/tmp/ca.crt \
                         --token="$K8S_TOKEN" \
                         set image deployment/project5-website \
-                        project5-website=$IMAGE
+                        project-5-cicd=$IMAGE
 
                         kubectl \
                         --server=https://172.31.43.38:6443 \
