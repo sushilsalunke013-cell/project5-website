@@ -1,8 +1,9 @@
+
 pipeline {
     agent any
 
     environment {
-        IMAGE = 'sushilsalunke/project-5-cicd:1.0'
+        IMAGE = "sushilsalunke/project-5-cicd:1.0-${BUILD_NUMBER}"
     }
 
     stages {
@@ -17,14 +18,13 @@ pipeline {
         stage('Build Image') {
             steps {
                 echo 'Building Docker image'
-
                 sh 'docker build -t cloudops-static-site:1.0 .'
             }
         }
 
         stage('Trivy Scan') {
             steps {
-                echo 'Scanning Docker image for HIGH and CRITICAL vulnerabilities'
+                echo 'Scanning Docker image'
 
                 sh '''
                     trivy image \
@@ -64,19 +64,48 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo 'Deploying application to Kubernetes'
+
+                withCredentials([
+                    string(
+                        credentialsId: 'k8s-token',
+                        variable: 'K8S_TOKEN'
+                    )
+                ]) {
+                    sh '''
+                        kubectl \
+                        --server=https://172.31.43.38:6443 \
+                        --certificate-authority=/tmp/ca.crt \
+                        --token="$K8S_TOKEN" \
+                        set image deployment/project5-website \
+                        project5-website=$IMAGE
+
+                        kubectl \
+                        --server=https://172.31.43.38:6443 \
+                        --certificate-authority=/tmp/ca.crt \
+                        --token="$K8S_TOKEN" \
+                        rollout status deployment/project5-website \
+                        --timeout=180s
+                    '''
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo 'SUCCESS: Image scanned and pushed to Docker Hub!'
+            echo 'SUCCESS: Application deployed to Kubernetes!'
         }
 
         failure {
-            echo 'FAILURE: Check the Jenkins Console Output.'
+            echo 'FAILURE: Check Jenkins Console Output.'
         }
 
         always {
-            echo 'Project 5 CI/CD pipeline execution finished.'
+            echo 'Project 5 CI/CD pipeline finished.'
         }
     }
 }
